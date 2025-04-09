@@ -1,39 +1,39 @@
 package com.queuemanagementsystem.model;
 
 /**
- * Represents an administrator responsible for system configuration and management.
- * Extends the base User class.
+ * Representa a un administrador responsable de la configuración y gestión del sistema.
+ * Extiende la clase base User.
  */
 public class Administrator extends User {
     private int accessLevel;
 
     /**
-     * Default constructor
+     * Constructor por defecto.
      */
     public Administrator() {
         super();
-        this.accessLevel = 1; // Default access level
+        this.accessLevel = 1; // Nivel de acceso predeterminado
     }
 
     /**
-     * Parameterized constructor with base user fields
+     * Constructor parametrizado con los campos básicos del usuario.
      *
-     * @param id Administrator's unique identifier
-     * @param name Administrator's full name
-     * @param password Administrator's authentication password
+     * @param id Identificador único del administrador.
+     * @param name Nombre completo del administrador.
+     * @param password Contraseña de autenticación del administrador.
      */
     public Administrator(String id, String name, String password) {
         super(id, name, password);
-        this.accessLevel = 1; // Default access level
+        this.accessLevel = 1; // Nivel de acceso predeterminado
     }
 
     /**
-     * Complete constructor with all fields
+     * Constructor completo con todos los campos.
      *
-     * @param id Administrator's unique identifier
-     * @param name Administrator's full name
-     * @param password Administrator's authentication password
-     * @param accessLevel Administrator's permission level
+     * @param id Identificador único del administrador.
+     * @param name Nombre completo del administrador.
+     * @param password Contraseña de autenticación del administrador.
+     * @param accessLevel Nivel de permiso del administrador.
      */
     public Administrator(String id, String name, String password, int accessLevel) {
         super(id, name, password);
@@ -41,69 +41,69 @@ public class Administrator extends User {
     }
 
     /**
-     * Configures a service category
+     * Configura una categoría de servicio.
      *
-     * @param category The category to configure
-     * @return true if the category was successfully configured, false otherwise
+     * @param category La categoría a configurar.
+     * @return true si la categoría fue configurada exitosamente, false en caso contrario.
      */
     public boolean configureCategory(Category category) {
-        // This would typically involve validation and persistence logic
-        // For now, we'll assume the category is valid if it has a name and prefix
+        // Esto típicamente implicaría lógica de validación y persistencia.
+        // Por ahora, se asume válida si tiene nombre y prefijo.
         return category != null && category.getName() != null &&
                 !category.getName().isEmpty() && category.getPrefix() != null &&
                 !category.getPrefix().isEmpty();
     }
 
     /**
-     * Creates a new service station
+     * Crea una nueva estación de servicio.
      *
-     * @param station The station to create
-     * @return true if the station was successfully created, false otherwise
+     * @param station La estación a crear.
+     * @return true si la estación fue creada exitosamente, false en caso contrario.
      */
     public boolean createStation(Station station) {
-        // This would typically involve validation and persistence logic
+        // Esto típicamente implicaría lógica de validación y persistencia.
         return station != null && station.getNumber() > 0;
     }
 
     /**
-     * Removes a service station
+     * Elimina una estación de servicio.
      *
-     * @param station The station to remove
-     * @return true if the station was successfully removed, false otherwise
+     * @param station La estación a eliminar.
+     * @return true si la estación fue eliminada exitosamente, false en caso contrario.
      */
     public boolean removeStation(Station station) {
-        // This would typically involve validation and persistence logic
+        // Esto típicamente implicaría lógica de validación y persistencia.
         return station != null;
     }
 
     /**
-     * Monitors service statistics
+     * Supervisa las estadísticas del servicio.
      *
-     * @return A string with current statistics information
+     * @return Una cadena con la información actual de las estadísticas.
      */
     public String superviseStatistics() {
-        // This would typically query the statistics service
-        return "Statistics monitoring functionality accessed by administrator: " + getName();
+        // Esto típicamente consultaría el servicio de estadísticas.
+        return "Funcionalidad de supervisión de estadísticas accedida por el administrador: " + getName();
     }
 
     /**
-     * Generates a productivity report
+     * Genera un informe de productividad.
      *
-     * @param reportType The type of report to generate (e.g., "DAILY", "WEEKLY")
-     * @return A string containing the productivity report
+     * @param reportType El tipo de informe a generar (por ejemplo, "DAILY", "WEEKLY").
+     * @return Una cadena que contiene el informe de productividad.
      */
     public String generateProductivityReport(String reportType) {
-        // This would typically query the statistics service for specific report data
+        // Esto típicamente consultaría el servicio de estadísticas para obtener los datos específicos del informe.
         StringBuilder report = new StringBuilder();
-        report.append("=== ").append(reportType).append(" PRODUCTIVITY REPORT ===\n");
-        report.append("Generated by: ").append(getName()).append("\n");
-        report.append("Date: ").append(java.time.LocalDate.now()).append("\n");
-        report.append("This is a placeholder for the actual report content");
+        report.append("=== ").append(reportType).append(" INFORME DE PRODUCTIVIDAD ===\n");
+        report.append("Generado por: ").append(getName()).append("\n");
+        report.append("Fecha: ").append(java.time.LocalDate.now()).append("\n");
+        report.append("Este es un marcador de posición para el contenido real del informe");
 
         return report.toString();
     }
 
-    // Getters and Setters
+    // Getters y Setters
 
     public int getAccessLevel() {
         return accessLevel;
@@ -114,9 +114,9 @@ public class Administrator extends User {
     }
 
     /**
-     * Returns a string representation of this Administrator
+     * Devuelve una representación en cadena de este Administrador.
      *
-     * @return A string representation
+     * @return Una representación en cadena.
      */
     @Override
     public String toString() {

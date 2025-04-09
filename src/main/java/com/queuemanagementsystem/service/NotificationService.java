@@ -8,17 +8,17 @@ import com.queuemanagementsystem.repository.ClientRepository;
 import java.util.Optional;
 
 /**
- * Service class for handling notifications to clients and displays.
+ * Clase de servicio para gestionar las notificaciones a clientes y pantallas.
  */
 public class NotificationService {
     private final NotificationSystem notificationSystem;
     private final ClientRepository clientRepository;
 
     /**
-     * Constructor with dependencies
+     * Constructor con dependencias.
      *
-     * @param notificationSystem The notification system for displays
-     * @param clientRepository Repository for client data
+     * @param notificationSystem Sistema de notificaciones para pantallas.
+     * @param clientRepository Repositorio para datos de clientes.
      */
     public NotificationService(NotificationSystem notificationSystem, ClientRepository clientRepository) {
         this.notificationSystem = notificationSystem;
@@ -26,29 +26,29 @@ public class NotificationService {
     }
 
     /**
-     * Notifies a client that their ticket is now being processed
+     * Notifica a un cliente que su ticket está siendo atendido.
      *
-     * @param ticket The ticket that is now in progress
-     * @param stationNumber The station number where the client should go
-     * @return true if the notification was sent successfully, false otherwise
+     * @param ticket El ticket que se encuentra en proceso.
+     * @param stationNumber Número de la estación donde debe acudir el cliente.
+     * @return true si la notificación se envió correctamente, false en caso contrario.
      */
     public boolean notifyClientTicketInProgress(Ticket ticket, int stationNumber) {
         if (ticket == null) {
             return false;
         }
 
-        // Update the display
+        // Actualiza la pantalla
         boolean displayUpdated = notificationSystem.displayTicket(ticket, stationNumber);
 
-        // Generate a visual alert
+        // Genera una alerta visual
         boolean alertGenerated = notificationSystem.generateVisualAlert(ticket);
 
-        // Also notify the client personally if possible
+        // También notifica al cliente directamente si es posible
         Optional<Client> clientOpt = clientRepository.findById(ticket.getClientId());
         boolean clientNotified = false;
 
         if (clientOpt.isPresent()) {
-            String message = "Your ticket " + ticket.getCode() + " is now being attended at station " + stationNumber;
+            String message = "Su ticket " + ticket.getCode() + " está siendo atendido en la estación " + stationNumber;
             clientNotified = clientOpt.get().receiveAlert(message);
         }
 
@@ -56,10 +56,10 @@ public class NotificationService {
     }
 
     /**
-     * Notifies a client that their ticket has been created
+     * Notifica a un cliente que su ticket ha sido creado.
      *
-     * @param ticket The newly created ticket
-     * @return true if the notification was sent successfully, false otherwise
+     * @param ticket El ticket recién creado.
+     * @return true si la notificación fue enviada correctamente, false en caso contrario.
      */
     public boolean notifyClientTicketCreated(Ticket ticket) {
         if (ticket == null) {
@@ -72,18 +72,18 @@ public class NotificationService {
             return false;
         }
 
-        String message = "Your ticket " + ticket.getCode() + " has been created for " +
-                (ticket.getCategory() != null ? ticket.getCategory().getName() : "general service");
+        String message = "Su ticket " + ticket.getCode() + " ha sido creado para " +
+                (ticket.getCategory() != null ? ticket.getCategory().getName() : "servicio general");
 
         return clientOpt.get().receiveAlert(message);
     }
 
     /**
-     * Notifies a client about their position in the queue
+     * Notifica a un cliente sobre su posición actual en la fila.
      *
-     * @param ticket The ticket
-     * @param position The position in the queue (1-based)
-     * @return true if the notification was sent successfully, false otherwise
+     * @param ticket El ticket correspondiente.
+     * @param position La posición actual en la fila (basada en 1).
+     * @return true si la notificación fue enviada correctamente, false en caso contrario.
      */
     public boolean notifyClientQueuePosition(Ticket ticket, int position) {
         if (ticket == null || position < 1) {
@@ -96,52 +96,52 @@ public class NotificationService {
             return false;
         }
 
-        String message = "Your ticket " + ticket.getCode() + " is currently in position " + position + " in the queue";
+        String message = "Su ticket " + ticket.getCode() + " está actualmente en la posición " + position + " de la fila.";
 
         return clientOpt.get().receiveAlert(message);
     }
 
     /**
-     * Updates the main display with a custom message
+     * Actualiza la pantalla principal con un mensaje personalizado.
      *
-     * @param message The message to display
-     * @return true if the display was updated successfully, false otherwise
+     * @param message El mensaje a mostrar.
+     * @return true si la pantalla fue actualizada correctamente, false en caso contrario.
      */
     public boolean updateMainDisplay(String message) {
         return notificationSystem.updateDisplay(message);
     }
 
     /**
-     * Clears the notification display
+     * Limpia el contenido de la pantalla de notificaciones.
      *
-     * @return true if the display was cleared successfully, false otherwise
+     * @return true si la pantalla fue limpiada correctamente, false en caso contrario.
      */
     public boolean clearDisplay() {
         return notificationSystem.clearDisplay();
     }
 
     /**
-     * Gets the current display message
+     * Obtiene el mensaje actualmente mostrado en pantalla.
      *
-     * @return The current display message
+     * @return El mensaje actual de la pantalla.
      */
     public String getCurrentDisplayMessage() {
         return notificationSystem.getDisplayMessage();
     }
 
     /**
-     * Gets the currently displayed ticket
+     * Obtiene el ticket actualmente mostrado en pantalla.
      *
-     * @return The code of the currently displayed ticket
+     * @return El código del ticket actualmente mostrado.
      */
     public String getCurrentTicket() {
         return notificationSystem.getCurrentTicket();
     }
 
     /**
-     * Gets the currently displayed station
+     * Obtiene el número de estación actualmente mostrado en pantalla.
      *
-     * @return The number of the currently displayed station
+     * @return El número de la estación actual.
      */
     public int getCurrentStation() {
         return notificationSystem.getCurrentStation();

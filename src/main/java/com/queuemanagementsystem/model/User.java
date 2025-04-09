@@ -3,8 +3,8 @@ package com.queuemanagementsystem.model;
 import java.util.Objects;
 
 /**
- * Base class representing any user that interacts with the system.
- * This serves as the parent class for Employee and Administrator.
+ * Clase base que representa a cualquier usuario que interactúa con el sistema.
+ * Sirve como clase padre para Employee y Administrator.
  */
 public class User {
     private String id;
@@ -12,17 +12,17 @@ public class User {
     private String password;
 
     /**
-     * Default constructor
+     * Constructor por defecto.
      */
     public User() {
     }
 
     /**
-     * Parameterized constructor
+     * Constructor parametrizado.
      *
-     * @param id User's unique identifier
-     * @param name User's full name
-     * @param password User's authentication password
+     * @param id Identificador único del usuario.
+     * @param name Nombre completo del usuario.
+     * @param password Contraseña de autenticación del usuario.
      */
     public User(String id, String name, String password) {
         this.id = id;
@@ -31,31 +31,31 @@ public class User {
     }
 
     /**
-     * Authenticates a user with the provided credentials
+     * Autentica a un usuario con las credenciales proporcionadas.
      *
-     * @param providedId The ID entered by the user
-     * @param providedPassword The password entered by the user
-     * @return true if authentication is successful, false otherwise
+     * @param providedId El ID ingresado por el usuario.
+     * @param providedPassword La contraseña ingresada por el usuario.
+     * @return true si la autenticación es exitosa, false en caso contrario.
      */
     public boolean login(String providedId, String providedPassword) {
         boolean matches = this.id.equals(providedId) && this.password.equals(providedPassword);
-        System.out.println("Debug - Login attempt: " + providedId);
-        System.out.println("Debug - ID match: " + this.id.equals(providedId));
-        System.out.println("Debug - Password match: " + this.password.equals(providedPassword));
+        System.out.println("Debug - Intento de inicio de sesión: " + providedId);
+        System.out.println("Debug - Coincidencia de ID: " + this.id.equals(providedId));
+        System.out.println("Debug - Coincidencia de contraseña: " + this.password.equals(providedPassword));
         return matches;
     }
 
     /**
-     * Simulates user logout functionality
+     * Simula la funcionalidad de cierre de sesión del usuario.
      *
-     * @return true indicating successful logout
+     * @return true indicando que la sesión fue cerrada correctamente.
      */
     public boolean logout() {
-        // In a real system, this would invalidate sessions, etc.
+        // En un sistema real, esto invalidaría sesiones, tokens, etc.
         return true;
     }
 
-    // Getters and Setters
+    // Getters y Setters
 
     public String getId() {
         return id;
@@ -73,16 +73,16 @@ public class User {
         this.name = name;
     }
 
-    // Note: We don't provide a getter for password for security reasons
+    // Nota: No se proporciona un getter para password por razones de seguridad
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * Compares this User to another object for equality
+     * Compara este usuario con otro objeto para verificar igualdad.
      *
-     * @param o The object to compare with
-     * @return true if the objects are equal, false otherwise
+     * @param o El objeto con el que se va a comparar.
+     * @return true si los objetos son iguales, false en caso contrario.
      */
     @Override
     public boolean equals(Object o) {
@@ -93,9 +93,9 @@ public class User {
     }
 
     /**
-     * Generates a hash code for this User
+     * Genera un código hash para este usuario.
      *
-     * @return The hash code
+     * @return El código hash.
      */
     @Override
     public int hashCode() {
@@ -103,9 +103,9 @@ public class User {
     }
 
     /**
-     * Returns a string representation of this User
+     * Devuelve una representación en cadena de este usuario.
      *
-     * @return A string representation
+     * @return Una representación en cadena.
      */
     @Override
     public String toString() {

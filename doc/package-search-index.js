@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.queuemanagementsystem"},{"l":"com.queuemanagementsystem.model"},{"l":"com.queuemanagementsystem.repository"},{"l":"com.queuemanagementsystem.service"},{"l":"com.queuemanagementsystem.ui"},{"l":"com.queuemanagementsystem.util"}];updateSearchResults();

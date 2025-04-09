@@ -3,26 +3,26 @@ package com.queuemanagementsystem.ui;
 import java.util.Scanner;
 
 /**
- * Base interface for menu classes with common functionality.
+ * Interfaz base para clases de menú con funcionalidades comunes.
  */
 public interface Menu {
     /**
-     * Displays the menu options
+     * Muestra las opciones del menú.
      */
     void displayMenu();
 
     /**
-     * Processes user input and executes the corresponding action
+     * Procesa la opción ingresada por el usuario y ejecuta la acción correspondiente.
      *
-     * @param option The option selected by the user
-     * @return true if the menu should continue, false if it should exit
+     * @param option La opción seleccionada por el usuario.
+     * @return true si el menú debe continuar, false si debe finalizar.
      */
     boolean processOption(String option);
 
     /**
-     * Starts the menu interaction loop
+     * Inicia el ciclo de interacción del menú.
      *
-     * @param scanner The scanner for reading user input
+     * @param scanner El escáner para leer la entrada del usuario.
      */
     default void start(Scanner scanner) {
         boolean continueMenu = true;

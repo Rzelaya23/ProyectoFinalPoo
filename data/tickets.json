@@ -240,5 +240,36 @@
     "generationTime": "2025-03-19T19:25:04.89866",
     "attentionTime": "2025-03-19T19:25:39.86232",
     "completionTime": "2025-03-19T19:25:58.784791"
+  },
+  {
+    "code": "GEN-635",
+    "status": "IN_PROGRESS",
+    "category": {
+      "id": 1,
+      "name": "Consulta General",
+      "description": "Consultas generales e información para clientes",
+      "prefix": "GEN",
+      "active": true,
+      "assignedEmployees": [
+        {
+          "availabilityStatus": "AVAILABLE",
+          "attendedTickets": [],
+          "id": "emp1",
+          "name": "John Smith",
+          "password": "pass123"
+        },
+        {
+          "availabilityStatus": "AVAILABLE",
+          "attendedTickets": [],
+          "id": "emp2",
+          "name": "Maria García",
+          "password": "pass123"
+        }
+      ]
+    },
+    "clientId": "111111",
+    "generationTime": "2025-04-08T21:32:06.635498",
+    "attentionTime": "2025-04-08T21:34:18.171694",
+    "completionTime": null
   }
 ]

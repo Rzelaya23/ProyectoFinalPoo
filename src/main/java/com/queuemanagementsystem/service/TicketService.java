@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Service class for managing tickets.
+ * Clase de servicio para gestionar la creación, asignación y finalización de tickets.
  */
 public class TicketService {
     private final TicketRepository ticketRepository;
@@ -24,12 +24,12 @@ public class TicketService {
     private final NotificationService notificationService;
 
     /**
-     * Constructor with repository dependencies
+     * Constructor con las dependencias de los repositorios.
      *
-     * @param ticketRepository Repository for ticket data
-     * @param clientRepository Repository for client data
-     * @param categoryRepository Repository for category data
-     * @param notificationService Service for sending notifications
+     * @param ticketRepository Repositorio de tickets.
+     * @param clientRepository Repositorio de clientes.
+     * @param categoryRepository Repositorio de categorías.
+     * @param notificationService Servicio para el envío de notificaciones.
      */
     public TicketService(TicketRepository ticketRepository, ClientRepository clientRepository,
                          CategoryRepository categoryRepository, NotificationService notificationService) {
@@ -40,11 +40,11 @@ public class TicketService {
     }
 
     /**
-     * Creates a new ticket for a client
+     * Crea un nuevo ticket para un cliente.
      *
-     * @param clientId The client's ID
-     * @param categoryId The service category ID
-     * @return The created ticket if successful, null otherwise
+     * @param clientId ID del cliente.
+     * @param categoryId ID de la categoría del servicio.
+     * @return El ticket creado si fue exitoso, null en caso contrario.
      */
     public Ticket createTicket(String clientId, int categoryId) {
         Optional<Client> clientOpt = clientRepository.findById(clientId);
@@ -64,7 +64,6 @@ public class TicketService {
         Ticket ticket = new Ticket(category, clientId);
 
         if (ticketRepository.save(ticket)) {
-            // Add the ticket to the category's queue
             category.addTicketToQueue(ticket);
             categoryRepository.update(category);
             return ticket;
@@ -74,67 +73,51 @@ public class TicketService {
     }
 
     /**
-     * Assigns the next ticket to an employee
+     * Asigna el siguiente ticket disponible a un empleado.
      *
-     * @param employee The employee to assign the ticket to
-     * @return The assigned ticket if successful, null otherwise
+     * @param employee Empleado disponible.
+     * @return El ticket asignado si fue exitoso, null si no hay tickets.
      */
     public Ticket assignNextTicket(Employee employee) {
         if (employee == null || !"AVAILABLE".equals(employee.getAvailabilityStatus())) {
             return null;
         }
 
-        // Check if the employee's station supports any categories
         if (employee.getAssignedStation() == null) {
             return null;
         }
 
-        // Get category IDs from the station
         List<Integer> categoryIds = employee.getAssignedStation().getSupportedCategoryIds();
-
-        // Create a list for the actual category objects
         List<Category> supportedCategories = new ArrayList<>();
 
-        // Resolve each category ID to its actual object
         for (Integer categoryId : categoryIds) {
             categoryRepository.findById(categoryId).ifPresent(supportedCategories::add);
         }
 
-        // Find the next ticket from any supported category
         for (Category category : supportedCategories) {
             Ticket nextTicket = category.getNextTicket();
 
-            if (nextTicket != null) {
-                if (employee.attendNextClient(nextTicket)) {
-                    // Update the ticket status
-                    nextTicket.changeStatus("IN_PROGRESS");
-                    nextTicket.setAttentionTime(LocalDateTime.now());
-
-                    // Update the ticket in the repository
-                    ticketRepository.update(nextTicket);
-
-                    // Send notification
-                    notificationService.notifyClientTicketInProgress(nextTicket,
-                            employee.getAssignedStation().getNumber());
-
-                    return nextTicket;
-                }
+            if (nextTicket != null && employee.attendNextClient(nextTicket)) {
+                nextTicket.changeStatus("IN_PROGRESS");
+                nextTicket.setAttentionTime(LocalDateTime.now());
+                ticketRepository.update(nextTicket);
+                notificationService.notifyClientTicketInProgress(nextTicket, employee.getAssignedStation().getNumber());
+                return nextTicket;
             }
         }
 
-        return null; // No tickets found in any category
+        return null;
     }
 
     /**
-     * Completes a ticket that's currently being attended by an employee
+     * Finaliza un ticket que está siendo atendido por un empleado.
      *
-     * @param ticket The ticket to complete
-     * @param employee The employee serving the ticket
-     * @return true if the ticket was completed successfully, false otherwise
+     * @param ticket Ticket que se desea finalizar.
+     * @param employee Empleado que lo está atendiendo.
+     * @return true si se completó con éxito, false en caso contrario.
      */
     public boolean completeTicket(Ticket ticket, Employee employee) {
-        if (ticket == null || employee == null ||
-                !"IN_PROGRESS".equals(ticket.getStatus())) {
+        if (ticket == null || employee == null || !"IN_PROGRESS".equals(ticket.getStatus())) {
             return false;
         }
 
@@ -148,10 +131,10 @@ public class TicketService {
     }
 
     /**
-     * Cancels a ticket
+     * Cancela un ticket en estado de espera.
      *
-     * @param ticketCode The code of the ticket to cancel
-     * @return true if the ticket was cancelled successfully, false otherwise
+     * @param ticketCode Código del ticket a cancelar.
+     * @return true si el ticket fue cancelado correctamente, false en caso contrario.
      */
     public boolean cancelTicket(String ticketCode) {
         Optional<Ticket> ticketOpt = ticketRepository.findByCode(ticketCode);
@@ -163,12 +146,9 @@ public class TicketService {
         Ticket ticket = ticketOpt.get();
         ticket.setStatus("CANCELLED");
 
-        // Remove from category queue (this would need to be implemented in Category)
         Category category = ticket.getCategory();
         if (category != null) {
-            // Here we're assuming there's a method to remove a specific ticket from the queue
-            // In a real system, you might need a more sophisticated approach
-            category.peekTicketQueue().remove(ticket);
+            category.peekTicketQueue().remove(ticket); // Asume que esta operación es segura.
             categoryRepository.update(category);
         }
 
@@ -176,10 +156,10 @@ public class TicketService {
     }
 
     /**
-     * Gets all waiting tickets for a specific category
+     * Obtiene todos los tickets en espera para una categoría específica.
      *
-     * @param categoryId The category ID
-     * @return List of waiting tickets
+     * @param categoryId ID de la categoría.
+     * @return Lista de tickets en espera.
      */
     public List<Ticket> getWaitingTicketsByCategory(int categoryId) {
         return ticketRepository.findAll().stream()
@@ -190,43 +170,43 @@ public class TicketService {
     }
 
     /**
-     * Gets all tickets for a specific client
+     * Obtiene todos los tickets asociados a un cliente.
      *
-     * @param clientId The client's ID
-     * @return List of the client's tickets
+     * @param clientId ID del cliente.
+     * @return Lista de tickets del cliente.
      */
     public List<Ticket> getTicketsByClient(String clientId) {
         return ticketRepository.findByClientId(clientId);
     }
 
     /**
-     * Gets all tickets attended by a specific employee
+     * Obtiene todos los tickets atendidos por un empleado.
      *
-     * @param employeeId The employee's ID
-     * @return List of tickets attended by the employee
+     * @param employeeId ID del empleado.
+     * @return Lista de tickets en progreso o completados.
      */
     public List<Ticket> getTicketsAttendedByEmployee(String employeeId) {
         return ticketRepository.findAll().stream()
-                .filter(ticket -> (ticket.getStatus().equals("IN_PROGRESS") ||
-                        ticket.getStatus().equals("COMPLETED")))
+                .filter(ticket -> ticket.getStatus().equals("IN_PROGRESS") ||
+                        ticket.getStatus().equals("COMPLETED"))
                 .collect(Collectors.toList());
     }
 
     /**
-     * Gets a ticket by its code
+     * Obtiene un ticket por su código único.
      *
-     * @param code The ticket code
-     * @return Optional containing the ticket if found, empty otherwise
+     * @param code Código del ticket.
+     * @return Optional con el ticket si se encuentra, vacío si no.
      */
     public Optional<Ticket> getTicketByCode(String code) {
         return ticketRepository.findByCode(code);
     }
 
     /**
-     * Gets the queue position of a waiting ticket
+     * Calcula la posición en la fila de un ticket en espera.
      *
-     * @param ticketCode The ticket code
-     * @return The position in queue (1-based) or -1 if not found or not waiting
+     * @param ticketCode Código del ticket.
+     * @return Posición en la fila (empezando desde 1), o -1 si no está en espera.
      */
     public int getTicketQueuePosition(String ticketCode) {
         Optional<Ticket> ticketOpt = ticketRepository.findByCode(ticketCode);
@@ -245,10 +225,10 @@ public class TicketService {
         List<Ticket> queue = category.peekTicketQueue();
         for (int i = 0; i < queue.size(); i++) {
             if (ticket.equals(queue.get(i))) {
-                return i + 1; // 1-based position
+                return i + 1;
             }
         }
 
-        return -1; // Not found in queue
+        return -1;
     }
 }

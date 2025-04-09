@@ -1,0 +1,6 @@
+com.queuemanagementsystem
+com.queuemanagementsystem.model
+com.queuemanagementsystem.repository
+com.queuemanagementsystem.service
+com.queuemanagementsystem.ui
+com.queuemanagementsystem.util
