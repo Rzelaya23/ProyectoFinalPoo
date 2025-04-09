@@ -1,0 +1,25 @@
+[
+  {
+    "id": 1,
+    "name": "Consulta General",
+    "description": "Consultas generales e información para clientes",
+    "prefix": "GEN",
+    "active": true,
+    "assignedEmployees": [
+      {
+        "availabilityStatus": "AVAILABLE",
+        "attendedTickets": [],
+        "id": "emp1",
+        "name": "John Smith",
+        "password": "pass123"
+      },
+      {
+        "availabilityStatus": "AVAILABLE",
+        "attendedTickets": [],
+        "id": "emp2",
+        "name": "Maria García",
+        "password": "pass123"
+      }
+    ]
+  }
+]

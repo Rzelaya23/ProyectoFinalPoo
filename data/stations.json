@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "number": 1,
+    "status": "OPEN",
+    "assignedEmployee": {
+      "availabilityStatus": "AVAILABLE",
+      "attendedTickets": [],
+      "id": "emp1",
+      "name": "John Smith",
+      "password": "pass123"
+    },
+    "supportedCategoryIds": [1, 2, 3, 4, 5]
+  },
+  {
+    "id": 2,
+    "number": 2,
+    "status": "OPEN",
+    "assignedEmployee": {
+      "availabilityStatus": "AVAILABLE",
+      "attendedTickets": [],
+      "id": "emp2",
+      "name": "Maria García",
+      "password": "pass123"
+    },
+    "supportedCategoryIds": [1, 2, 3, 4, 5]
+  }
+]
