@@ -42,21 +42,18 @@ proyecto/
 3. Establecer `src/main/java` como directorio de código fuente
 4. Ejecutar la clase `com.queuemanagementsystem.Main`
 
-### Compilación Manual
+### Instrucciones para ejecutar pruebas unitarias
 
-1. Abrir una terminal y navegar a la carpeta raíz del proyecto
-2. Crear la carpeta para los archivos compilados:
-   ```
-   mkdir -p out/production
-   ```
-3. Compilar el código fuente:
-   ```
-   javac -d out/production -cp ".:lib/*" src/main/java/com/queuemanagementsystem/Main.java src/main/java/com/queuemanagementsystem/*/*.java
-   ```
-4. Ejecutar la aplicación:
-   ```
-   java -cp "out/production:lib/*" com.queuemanagementsystem.Main
-   ```
+1. Descargar las siguientes dependencias: https://repo1.maven.org/maven2/junit/junit/4.13.2/junit-4.13.2.jar y https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
+2. Luego File → Project Structure → Libraries → + → Java → selecciona los JAR descargados
+3. Luego File > Project Structure > Modules
+4. Selecciona la pestaña "Dependencies"
+5. Verificar que JUnit y Hamcrest estén en el scope "Test"
+
+Adicional:
+1. Verificar que la carpeta src/test/java este marcada como "Test Source Root"
+2. Verificar que la carpeta src/main/java este marcada como "Source Root"
+
 
 ## Flujo del Programa
 
